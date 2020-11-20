@@ -6,7 +6,7 @@ Por enquanto, contamos com um único script de raspagem, formatação e exporta�
 
 ## Requisitos para a instalação
 * Python 3.x
-* PRAW (biblioteca facilitadora do acesso à API do Reddit)
+* PRAW (biblioteca que facilita o acesso à API do Reddit)
 
 ## Instalação e modo de uso
 Basta clonar o repositório, instalar as bibliotecas indicadas acima na sessão de requisitos e rodar os scripts com o Python:
