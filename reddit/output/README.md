@@ -1,0 +1,1 @@
+# Diretório para o armazenamento dos arquivos txt exportados
