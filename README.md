@@ -17,11 +17,11 @@ cd sdbase
 ```
 Para o módulo do Reddit:
 ```
-python .\reddit\submissions_para_txt.py
+python reddit\submissions_para_txt.py
 ```
 Para o módulo do WhatsApp:
 ```
-python .\whatsapp\conversas_para_csv.py
+python whatsapp\conversas_para_csv.py
 ```
 ## Agradecimentos
 Esse repositório está sendo desenvolvido no contexto de uma pesquisa de mestrado financiada pela Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES) realizada no Programa de Pós-Graduação em Sociologia e Antropologia (PPGSA) da Universidade Federal do Rio de Janeiro (UFRJ). O desenvolvimento desse pacote deve muito ao apoio dessas instituições.
