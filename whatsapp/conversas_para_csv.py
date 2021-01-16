@@ -24,4 +24,4 @@ result = re.findall(pattern, txt)
 df = pd.DataFrame(result, columns=['data', 'hora', 'autor', 'conteudo'])
 
 # %% exporta DataFrame com dados da conversa para CSV
-df.to_csv(f'{os.path.dirname(__file__)}/output/conversa.csv', index=False)
+df.to_csv(f'{os.path.dirname(__file__)}{os.sep}output{os.sep}conversa.csv', index=False)

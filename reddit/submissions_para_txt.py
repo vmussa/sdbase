@@ -58,5 +58,5 @@ def submission_to_txt(submission, filename):
 # %% Escreve txt's para cada objeto Submission
 for s in submissions:
     submission_to_txt(
-        s, f'{os.path.dirname(__file__)}\\output\\subreddit_{sub}_submission_{s.id}.txt'
+        s, f'{os.path.dirname(__file__)}{os.sep}output{os.sep}subreddit_{sub}_submission_{s.id}.txt'
         )
