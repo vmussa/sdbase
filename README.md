@@ -5,23 +5,29 @@ Esse repositório guarda uma série de scripts básicos para o auxílio à pesqu
 Por enquanto, contamos com um único script de raspagem, formatação e exportação de dados da rede social Reddit para a análise qualitativa e codificação. Recomendamos ao usuário que clone o repositório para usá-lo, tal como explicado abaixo, na sessão de instalação.
 
 ## Requisitos para a instalação
-* Python 3.x
+* Python 3.8
+* pandas (biblioteca para manipulação de dados via DataFrames)
 * PRAW (biblioteca que facilita o acesso à API do Reddit)
 
+O arquivo `requirements.txt` contém todas essas informações, o que permite uma instalação fácil, como indicado na seção abaixo. 
+
 ## Instalação e modo de uso
-Basta clonar o repositório, instalar as bibliotecas indicadas acima na sessão de requisitos e rodar os scripts com o Python:
+Basta clonar o repositório, criar um ambiente virtual, instalar as bibliotecas indicadas acima com o `pip` e rodar os scripts com o Python, como no exemplo abaixo:
 ```
 cd diretorio-de-instalacao 
 git clone https://github.com/vmussa/sdbase.git
 cd sdbase
+python -m venv .venv
+pip install -r requirements.txt
 ```
-Para o módulo do Reddit:
+Para o usar módulo do Reddit:
 ```
 python reddit\submissions_para_txt.py
 ```
-Para o módulo do WhatsApp:
+Para o usar módulo do WhatsApp:
 ```
 python whatsapp\conversas_para_csv.py
 ```
+
 ## Agradecimentos
 Esse repositório está sendo desenvolvido no contexto de uma pesquisa de mestrado financiada pela Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES) realizada no Programa de Pós-Graduação em Sociologia e Antropologia (PPGSA) da Universidade Federal do Rio de Janeiro (UFRJ). O desenvolvimento desse pacote deve muito ao apoio dessas instituições.
