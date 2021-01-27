@@ -5,34 +5,29 @@ formato que busca conservar sua forma de apresentação original da web. Isso
 permite a análise qualitativa e a codificação dos dados em softwares como
 RQDA e QualCoder.
 """
-
-# %% Configurações iniciais
-# importa as bibliotecas
 import os
 import io
 import praw
 from praw.models import MoreComments
 from textwrap import dedent
 
-# %% Acessa a API do Reddit
-client_id = input('Insira seu client_id: ')
-client_secret = input('Insira seu client_secret: ')
-username = input('Insira seu usuário do reddit: ')
-password = input('Insira sua senha do reddit: ')
-reddit = praw.Reddit(
-    client_id=client_id,
-    client_secret=client_secret,
-    user_agent="<Python/praw>:<ScriptsBasicosParaSociologiaDigital (sdbase)>:<v0.0.1> (by /u/vmtgomes)",
-    username=username,
-    password=password
-)
+# acessa a API do Reddit
+def get_reddit_object(client_id, client_secret, username, password):
+    reddit = praw.Reddit(
+        client_id=client_id,
+        client_secret=client_secret,
+        user_agent="<Python/praw>:<ScriptsBasicosParaSociologiaDigital (sdbase)>:<v0.0.1> (by /u/vmtgomes)",
+        username=username,
+        password=password
+    )
+    return reddit
 
-# %% Obtém lista de objetos Submission através da search query de interesse
-query = input('Insira sua consulta: ') # ver https://www.reddit.com/wiki/search
-sub = input('Insira o subreddit a ser raspado: ')
-submissions = [submission for submission in reddit.subreddit(sub).search(query)]
+# função que obtém lista de objetos Submission através da search query de interesse
+def get_submissions(sub, query):
+    submissions = [submission for submission in reddit.subreddit(sub).search(query)]
+    return submissions
 
-# %% Função que itera a CommentForest recursivamente
+# função que itera a CommentForest recursivamente
 def parse_comments(top_comment):
     # conteúdo dos comentários
     content = f'<{top_comment.parent_id}>: {top_comment.body} <{top_comment.id}>\n\n\n'
@@ -40,7 +35,7 @@ def parse_comments(top_comment):
         content += '\t' + parse_comments(comment) # elemento recursivo
     return content
 
-# %% Função que escreve txt legível a partir de objeto Submission
+# função que escreve txt legível a partir de objeto Submission
 def submission_to_txt(submission, filename):
     with io.open(filename, "w", encoding="utf-8") as f:
         header = dedent(f"""\
@@ -55,8 +50,22 @@ def submission_to_txt(submission, filename):
             body += parse_comments(comment)
         f.write(header+body)
 
-# %% Escreve txt's para cada objeto Submission
-for s in submissions:
-    submission_to_txt(
-        s, f'{os.path.dirname(__file__)}{os.sep}output{os.sep}subreddit_{sub}_submission_{s.id}.txt'
-        )
+
+if __name__ == '__main__':
+    # obtém credenciais da API do Reddit e gera objeto Reddit do PRAW
+    client_id = input('Insira seu client_id: ')
+    client_secret = input('Insira seu client_secret: ')
+    username = input('Insira seu usuário do reddit: ')
+    password = input('Insira sua senha do reddit: ')
+    reddit = get_reddit_object(client_id, client_secret, username, password)
+
+    # obtém dados para a requisição da consulta à API do Reddit
+    sub = input('Insira o subreddit a ser raspado: ')
+    query = input('Insira sua consulta: ') # ver https://www.reddit.com/wiki/search
+    submissions = get_submissions(sub, query)
+
+    # gera um .txt para cada item da lista submissions
+    for s in submissions:
+        submission_to_txt(
+            s, f'{os.path.dirname(__file__)}{os.sep}output{os.sep}subreddit_{sub}_submission_{s.id}.txt'
+            )
