@@ -9,7 +9,6 @@ import os
 import io
 import praw
 from praw.models import MoreComments
-from textwrap import dedent
 
 # acessa a API do Reddit
 def get_reddit_object(client_id, client_secret, username, password):
@@ -38,11 +37,11 @@ def parse_comments(top_comment):
 # função que escreve txt legível a partir de objeto Submission
 def submission_to_txt(submission, filename):
     with io.open(filename, "w", encoding="utf-8") as f:
-        header = dedent(f"""\
-                        ***SUBMISSION***\n
-                        URL: {submission.url}\n
-                        TITLE: {submission.title}\n
-                        SELFTEXT: {submission.selftext}\n\n\n\n"""
+        header = (
+            "***SUBMISSION***\n"
+            f"URL: {submission.url}\n"
+            f"TITLE: {submission.title}\n"
+            f"SELFTEXT: {submission.selftext}\n\n\n\n"
         )
         body = '***COMMENTS***\n\n'
         submission.comments.replace_more(limit=0)
