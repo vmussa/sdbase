@@ -16,28 +16,9 @@ USER_AGENT = (
     "(sdbase)>:<v0.0.1> (by /u/vmtgomes)"
     )
 
-# acessa a API do Reddit
-def get_reddit_object(client_id, client_secret, user_agent=USER_AGENT,
-                      username, password):
-    reddit = praw.Reddit(
-        client_id=client_id,
-        client_secret=client_secret,
-        user_agent=USER_AGENT,
-        username=username,
-        password=password
-    )
-    return reddit
-
-# função que obtém lista de objetos Submission através da search query
-# de interesse
-def get_submissions(sub, query):
-    submissions = [
-        submission for submission in reddit.subreddit(sub).search(query)
-        ]
-    return submissions
-
-# função que itera a CommentForest recursivamente
 def parse_comments(top_comment):
+    """Função que itrea a CommentForest recursivamente e obtém todos
+    os comentários de um único post."""
     # conteúdo dos comentários
     content = (f"<{top_comment.parent_id}>: {top_comment.body} "
                f"<{top_comment.id}>\n\n\n")
@@ -47,6 +28,8 @@ def parse_comments(top_comment):
 
 # função que escreve txt legível a partir de objeto Submission
 def submission_to_txt(submission, filename):
+    """Função que escreve txt legível a partir de objeto Submission
+    do PRAW."""
     with io.open(filename, "w", encoding="utf-8") as f:
         header = (
             "***SUBMISSION***\n"
@@ -67,12 +50,22 @@ if __name__ == '__main__':
     client_secret = input('Insira seu client_secret: ')
     username = input('Insira seu usuário do reddit: ')
     password = input('Insira sua senha do reddit: ')
-    reddit = get_reddit_object(client_id, client_secret, username, password)
+    reddit = praw.Reddit(
+        client_id=client_id,
+        client_secret=client_secret,
+        username=username,
+        user_agent=USER_AGENT,
+        password=password
+        )
 
     # obtém dados para a requisição da consulta à API do Reddit
     sub = input('Insira o subreddit a ser raspado: ')
     query = input('Insira sua consulta: ') # ver https://www.reddit.com/wiki/search
-    submissions = get_submissions(sub, query)
+    
+    # obtém uma lista de submissões a partir da consulta de interesse
+    submissions = [
+        submission for submission in reddit.subreddit(sub).search(query)
+    ]
 
     # gera um .txt para cada item da lista submissions
     for s in submissions:
