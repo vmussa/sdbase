@@ -10,26 +10,37 @@ import io
 import praw
 from praw.models import MoreComments
 
+# define user agent do sdbase para a API do Reddit
+USER_AGENT = (
+    "<Python/praw>:<ScriptsBasicosParaSociologiaDigital "
+    "(sdbase)>:<v0.0.1> (by /u/vmtgomes)"
+    )
+
 # acessa a API do Reddit
-def get_reddit_object(client_id, client_secret, username, password):
+def get_reddit_object(client_id, client_secret, user_agent=USER_AGENT,
+                      username, password):
     reddit = praw.Reddit(
         client_id=client_id,
         client_secret=client_secret,
-        user_agent="<Python/praw>:<ScriptsBasicosParaSociologiaDigital (sdbase)>:<v0.0.1> (by /u/vmtgomes)",
+        user_agent=USER_AGENT,
         username=username,
         password=password
     )
     return reddit
 
-# função que obtém lista de objetos Submission através da search query de interesse
+# função que obtém lista de objetos Submission através da search query
+# de interesse
 def get_submissions(sub, query):
-    submissions = [submission for submission in reddit.subreddit(sub).search(query)]
+    submissions = [
+        submission for submission in reddit.subreddit(sub).search(query)
+        ]
     return submissions
 
 # função que itera a CommentForest recursivamente
 def parse_comments(top_comment):
     # conteúdo dos comentários
-    content = f'<{top_comment.parent_id}>: {top_comment.body} <{top_comment.id}>\n\n\n'
+    content = (f"<{top_comment.parent_id}>: {top_comment.body} "
+               f"<{top_comment.id}>\n\n\n")
     for comment in top_comment.replies:
         content += '\t' + parse_comments(comment) # elemento recursivo
     return content
@@ -66,5 +77,6 @@ if __name__ == '__main__':
     # gera um .txt para cada item da lista submissions
     for s in submissions:
         submission_to_txt(
-            s, f'{os.path.dirname(__file__)}{os.sep}output{os.sep}subreddit_{sub}_submission_{s.id}.txt'
+            s,
+            f'{os.path.dirname(__file__)}{os.sep}output{os.sep}subreddit_{sub}_submission_{s.id}.txt'
             )
