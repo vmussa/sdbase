@@ -26,7 +26,6 @@ def parse_comments(top_comment):
         content += '\t' + parse_comments(comment) # elemento recursivo
     return content
 
-# função que escreve txt legível a partir de objeto Submission
 def submission_to_txt(submission, filename):
     """Função que escreve txt legível a partir de objeto Submission
     do PRAW."""
